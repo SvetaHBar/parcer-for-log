@@ -69,6 +69,8 @@ def print_table(cmds):
     for cmd, durations in cmds.items():
         normalized_durations = normalize_list(durations, 3)
         print("{: >20} {: >20} {: >20} {: >20}\n".format(cmd, normalized_durations[0], normalized_durations[1], normalized_durations[2]))
+    for Runtime, DXver, TLver in versions.items():
+        print("{: >20} {: >20} {: >20} {: >20}".format(Runtime, DXver, TLver +"\n"))
 
 print_table(commands)        # call to print_table function
 
@@ -82,7 +84,7 @@ print normalize_list
 def create_output_file():
     with open('outputfile' + timestamp,'w+') as outputfile:
         for Runtime, DXver, TLver in versions.items():
-            outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(Runtime, DXver, TLver +"\n")
+            #outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(Runtime, DXver, TLver +"\n")
             outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(*column_name_list) + "\n") #print headers
                 #outputfile.write("\t".join(column_name_list) + "\n")
         for cmd, durations in commands.items():
