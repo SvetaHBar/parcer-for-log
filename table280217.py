@@ -10,6 +10,7 @@ import time
 t = time.localtime()
 timestamp = time.strftime('%b-%d-%Y_%H%M', t)
 commands = {}  # empty dict for keep all relevant cmd and durations
+versions = {} # empty dict for keep all basic data
 column_name_list = ["command", "duration1", "duration2", "duration3"]
 
 
@@ -32,6 +33,7 @@ def decode_line(line_words):
     print line_words
     return line_words[1], line_words[3]
 
+
 def collect_data(path):
     with open(path) as inputfile:
         for line in inputfile:
@@ -47,7 +49,14 @@ def collect_basic_data(path1):
     with open(path1) as inputfile1:
         for line in inputfile1:
            if is_basic_data_in_line(line):
-              print Runtime(line.split()) or DXver(line.split()) or TLver(line.split())
+               Runtime, DXver, TLver = line.split()
+               if Runtime in versions:
+                   versions[Runtime].append(DXver)
+               else:
+                   versions[Runtimes].append(TLver)
+
+
+
 
 
 
@@ -72,9 +81,10 @@ print normalize_list
 
 def create_output_file():
     with open('outputfile' + timestamp,'w+') as outputfile:
-        outputfile.write (collect_basic_data)
-        outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(*column_name_list) + "\n") #print headers
-        #outputfile.write("\t".join(column_name_list) + "\n")
+        for Runtime, DXver, TLver in versions.items():
+            outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(Runtime, DXver, TLver +"\n")
+            outputfile.write("{: >20} {: >20} {: >20} {: >20}".format(*column_name_list) + "\n") #print headers
+                #outputfile.write("\t".join(column_name_list) + "\n")
         for cmd, durations in commands.items():
             normalized_durations = normalize_list(durations, 3)
             outputfile.write("{: >20} {: >20} {: >20} {: >20}\n".format(cmd, normalized_durations[0], normalized_durations[1], normalized_durations[2]))
