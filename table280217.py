@@ -14,10 +14,11 @@ versions = {} # empty dict for keep all basic data
 column_name_list = ["command", "duration1", "duration2", "duration3"]
 
 
-def is_basic_data_in_line(line):
-    line_words = line.split()
-    if Runtime in line_words or DXver in line_words or TLver in line_words:
+def is_basic_data_from_line(line):
+    line_versions = line.split()
+    if Runtime in line_versions or DXver in line_versions or TLver in line_versions:
         return True
+        print "finally yes"
     else:
         return False
 
@@ -32,6 +33,20 @@ def is_cmd_duration_ivent_in_line(line):
 def decode_line(line_words):
     print line_words
     return line_words[1], line_words[3]
+
+def get_version_from_line(version, line_versions):
+    #other option:
+   # if version in line_versions:
+   #     print line_versions.index(version)
+    try:
+        index_version = line_versions.index(version)
+        return index_element
+    except ValueError:
+        return None
+
+
+    #print line_versions
+    #return line_versions[DXver] ,line_versions[Runtime], line_versions[TLver]
 
 
 def collect_data(path):
@@ -48,9 +63,10 @@ def collect_data(path):
 def collect_basic_data(path1):
     with open(path1) as inputfile1:
         for line in inputfile1:
-           if is_basic_data_in_line(line):
-               Runtime, DXver, TLver = line.split()
-               if Runtime in versions:
+           if is_basic_data_from_line(line):
+               version = get_version_in_line(line.split())
+               #Runtime, DXver, TLver = line.split()  # lo nahon , ki kol ereh be shura nefredet az zarih lishol im ereh v shura im ken ma osim
+               if version in versions:
                    versions[Runtime].append(DXver)
                else:
                    versions[Runtimes].append(TLver)
@@ -63,7 +79,6 @@ def collect_basic_data(path1):
 # print function for debuging only
 
 def print_table(cmds):
-    #print( "\t".join(column_name_list))
     print("{: >20} {: >20} {: >20} {: >20}".format(*column_name_list))
     print(cmds)
     for cmd, durations in cmds.items():
