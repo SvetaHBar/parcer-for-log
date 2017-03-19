@@ -34,16 +34,17 @@ def decode_line(line_words):
     print line_words
     return line_words[1], line_words[3]
 
-def get_version_from_line(version, line_versions):
-    #other option:
-   # if version in line_versions:
-   #     print line_versions.index(version)
+def get_version_from_line(version_type, line_words):
     try:
-        index_version = line_versions.index(version)
-        return index_element
+        version_type_index = line_words.index(version_type)  #this row return version type index
+        if line_words[version_type_index + 1] == "=":
+            return line_words[version_type_index + 2]
     except ValueError:
-        return None
+        pass
+    return None
 
+def unitest():
+    print(get_version_from_line(Runtime, ["Runtime", "=", "18.0.0.17"]))
 
     #print line_versions
     #return line_versions[DXver] ,line_versions[Runtime], line_versions[TLver]
@@ -87,14 +88,11 @@ def print_table(cmds):
     for Runtime, DXver, TLver in versions.items():
         print("{: >20} {: >20} {: >20} {: >20}".format(Runtime, DXver, TLver +"\n"))
 
-print_table(commands)        # call to print_table function
 
 def normalize_list(original_list, target_len):
     normalized_list = original_list + target_len * ["N/A"]
     normalized_list = normalized_list[:target_len]
     return normalized_list
-
-print normalize_list
 
 def create_output_file():
     with open('outputfile' + timestamp,'w+') as outputfile:
@@ -113,5 +111,6 @@ def main():
     collect_data(path)
     collect_basic_data(path1)
     create_output_file()
+    unitest()
 if __name__ == '__main__':
     main()
